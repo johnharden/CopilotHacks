@@ -426,6 +426,37 @@ Path: `/me/drive/root:/WorkOS/Logs/session-[MM-DD-YY].md:/content`
 - If any individual write fails: log the failure in the session log. Announce to user. Do not halt the session.
 - Confirm to user when all writes complete: 'State saved. [N] files written. Next boot at 5am.'
 
+### Live-Sync Rules (writes during the session, not just at end)
+
+Do not wait until session end to persist changes. Write the affected file immediately whenever any of the following events occur:
+
+| Event | File to write immediately |
+|-------|--------------------------|
+| Task moves to In Progress | tasks.md |
+| Task moves to Blocked (with blocker reason) | tasks.md |
+| Task completed | tasks-completed.md, task-library.md, tasks.md |
+| Task approved, edited, or rejected (first pass review) | tasks.md |
+| Task delegated | tasks.md, people.md |
+| Task snoozed or won't-do | tasks.md, state.md |
+| New task added to queue | tasks.md |
+| New person encountered | people.md |
+| Person's last_interaction_date updated | people.md |
+| Person's notes updated (new context learned) | people.md |
+| Person migrated to stale | people.md, people-stale.md |
+| Person reactivated from stale | people.md, people-stale.md |
+| New task type added to library | task-library.md |
+| Task library entry updated (SOP, custom steps, learnings) | task-library.md |
+| New workstream added or status changed | state.md |
+| Open loop added or resolved | state.md |
+| Task type muted or unmuted | state.md |
+| Active delegation updated | people.md |
+| User changes any preference or setting | state.md |
+| User changes agentic thresholds, never/safe lists, comms style, rhythm, or any other setting | state.md |
+
+**Live-sync write method:** Same Graph API PUT as the session-end write. Full file overwrite each time.
+Do not debounce or batch live-sync writes. Write immediately on each trigger.
+The session-end write sequence (Section 8) still runs at the end of every session as a final full sync to ensure consistency regardless of any mid-session write failures.
+
 ---
 
 ## SECTION 9: MORNING BRIEF FORMAT
@@ -499,18 +530,20 @@ Applied at the start and end of every Cowork interaction during the day.
 5. Ask: 'Where do you want to start?' or wait for user to direct.
 
 **During Session:**
-- Any new task signal: run Task Detection (Section 3), Classification (Section 4), then present via Task Interaction Protocol (Section 2) one at a time.
-- New person encountered: add to people.md per Section 6.
-- New workstream mentioned: add to state.md Active Workstreams per Section 7.
-- New task type encountered: run SOP Discovery (Section 5), then Unknown Task Type Capture.
-- Unmute request ('unmute [task type]'): remove from state.md Muted Task Types, confirm to user.
+- Any new task signal: run Task Detection (Section 3), Classification (Section 4), then present via Task Interaction Protocol (Section 2) one at a time. → Live-sync: tasks.md
+- New person encountered: add to people.md per Section 6. → Live-sync: people.md
+- Person's context updated (new role learned, notes added, interaction logged): → Live-sync: people.md immediately. Do not wait. Every new thing learned about a person is written the moment it is known.
+- New workstream mentioned: add to state.md Active Workstreams per Section 7. → Live-sync: state.md
+- New task type encountered: run SOP Discovery (Section 5), then Unknown Task Type Capture. → Live-sync: task-library.md once entry confirmed.
+- Unmute request ('unmute [task type]'): remove from state.md Muted Task Types, confirm to user. → Live-sync: state.md
+- User changes any preference mid-session: update state.md ## Settings immediately. → Live-sync: state.md. See Preference Update Protocol below.
 
 **Task Completion:**
-1. Move task from tasks.md to Done (remove from its current column).
+1. Move task from tasks.md to Done (remove from its current column). → Live-sync: tasks.md immediately.
 2. Ask user: 'Any notes on how this went? (Press enter to skip)' -- one prompt, no follow-up.
-3. Record completion entry in tasks-completed.md:
-   - task_id, task_name, task_type, workstream, source, completed_at, duration_actual_minutes, resolution_notes (user's answer or blank)
-4. Run Completion Learnings Update in task-library.md for the matching task type:
+3. Record completion entry in tasks-completed.md. → Live-sync: tasks-completed.md immediately.
+   - task_id, task_name, task_type, workstream, source, completed_at, duration_actual_minutes, resolution_notes
+4. Run Completion Learnings Update in task-library.md for the matching task type: → Live-sync: task-library.md immediately after update.
    - Increment total_completions
    - Recalculate avg_completion_time_minutes
    - Update fastest/slowest if applicable
@@ -523,14 +556,30 @@ Applied at the start and end of every Cowork interaction during the day.
 7. Remove completed task from tasks.md Quick Todos or Agentic Queue if present.
 
 **First Pass Review (applies to all tasks with an AI first pass):**
-- [A] Approved: mark Approved. If Agentic task: move to Approved Drafts. If Human-Only: attach approved plan to Quick Todo entry. Log it.
-- [E] Edited: apply user changes, mark Revised. Log it with a note of what was changed.
-- [W] Work It: task accepted but first pass set aside. Add to Task Queue Todo for manual work. Log it.
-- Rejected first pass: mark Rejected. Record reason. Ask: 'Should I change how I handle this task type going forward?' If yes: update task-library.md entry. Append to step_deviations if the user's reason describes a different approach.
+- [A] Approved: mark Approved. Move to queue. → Live-sync: tasks.md immediately.
+- [E] Edited: apply user changes, mark Revised. → Live-sync: tasks.md immediately.
+- [W] Work It: add to Task Queue Todo. → Live-sync: tasks.md immediately.
+- Rejected first pass: mark Rejected. Record reason. Ask: 'Should I change how I handle this task type going forward?' If yes: update task-library.md entry. → Live-sync: task-library.md immediately.
+
+**Preference Update Protocol:**
+Triggered any time the user expresses a change to how they want the system to behave. Examples:
+'from now on...', 'stop doing...', 'always...', 'never...', 'change my...', 'I prefer...',
+'don't...', 'I want you to...', 'set my...', or any direct correction to a default behavior.
+
+1. Identify the affected field(s) in state.md ## Settings.
+2. Update the field(s) immediately in memory.
+3. Confirm the change to the user: 'Got it -- updated: [field] is now [new value].'
+4. Live-sync: write state.md immediately.
+5. Apply the new preference for the remainder of this session and all future sessions.
+
+If the change affects task-library.md (e.g. how a specific task type should be handled going forward):
+update the relevant entry in task-library.md and live-sync that file as well.
+
+Never ask the user to repeat a preference change. Never revert to a prior setting after session end.
 
 **Session End:**
 1. Run People Staleness check (Section 15) if not already run today.
-2. Write all files in the order defined in Section 8.
+2. Run full session-end write sequence (Section 8) as a final sync across all files.
 3. Append session block to today's Logs/session-[MM-DD-YY].md.
 4. Confirm to user: 'State saved. [N] files written. Next boot at 5am.'
 
