@@ -176,6 +176,29 @@ Do not send, submit, or act on any first pass. Every first pass is surface-only 
 
 **Step 14:** Deliver Morning Brief per Section 9 format.
 
+**Step 15: WRAP-UP SCHEDULE CONFIRMATION -- REQUIRED BEFORE TASK INTERACTION**
+
+After the morning brief email is sent, present the following to the user in Cowork before surfacing any tasks:
+
+'Your nightly wrap-up is scheduled for [nightly_wrap_time] today. I will write all files and send your summary email at that time.
+
+  [C] CONFIRM -- keep today's wrap-up at [nightly_wrap_time]
+  [R] RESCHEDULE -- pick a different time for today only
+  [S] SKIP -- no wrap-up today (all files will still be written at your hard stop time)
+
+Confirm your wrap-up time to proceed.'
+
+> This step is MANDATORY. Do not present the task interaction loop or surface any tasks until the user responds to this prompt. The wrap-up schedule must be set before the day begins.
+
+On user response:
+- [C] CONFIRM: log confirmed_wrapup_time: [nightly_wrap_time] in today's session log. Proceed to task interaction.
+- [R] RESCHEDULE: ask 'What time today?' Update today's scheduled trigger to the new time. Log rescheduled_wrapup_time: [new time]. Proceed to task interaction.
+- [S] SKIP: log wrapup_skipped: true. Set a fallback write trigger at hard_stop time from state.md Settings to ensure all files are still written even without a wrap-up email. Proceed to task interaction.
+
+If nightly_wrap is false in state.md Settings: skip this step entirely. Instead display:
+'No nightly wrap-up configured. All files will be written automatically at your hard stop time ([hard_stop]).'
+Then proceed directly to task interaction.
+
 ---
 
 ## SECTION 2: TASK INTERACTION PROTOCOL
@@ -381,41 +404,49 @@ The Kanban board has one swimlane per Active Workstream plus one Standalone swim
 
 All six data files are written after EVERY session. No exceptions.
 
-### Write Order (execute in this sequence every session end)
+### End-of-Day Full Write -- MANDATORY
+
+> **THIS WRITE SEQUENCE IS NON-NEGOTIABLE.** Every file listed below MUST be written at the end of every session. There are no optional writes, no skippable steps, and no exceptions based on whether a file "changed." Write everything, every time. A file that appears unchanged still gets written to guarantee state integrity.
+>
+> If ANY write fails: stop, notify the user immediately with the exact error, and do not proceed to the next write until the failed write is resolved or explicitly skipped by the user. A partial write is worse than no write -- do not silently continue past a failure.
+>
+> Do not confirm session end to the user until every write below has either succeeded or been explicitly acknowledged as failed.
 
 **Write 1 -- tasks-completed.md**
-Write first. Read current file content, append any tasks completed this session (each with resolution notes and completion timestamp), write full file back.
-If no tasks were completed this session: skip this write.
+Read current file content. Append any tasks completed this session with resolution notes and completion timestamp. Write full file back.
 Path: `/me/drive/root:/WorkOS/tasks-completed.md:/content`
 
 **Write 2 -- task-library.md**
-Write second. Apply all completion learning updates from this session. Append any new task type entries. Write full file.
+Apply all completion learning updates from this session. Append any new task type entries. Write full file.
 Path: `/me/drive/root:/WorkOS/task-library.md:/content`
 
 **Write 3 -- tasks.md**
-Write third. Full overwrite of live task queue. All completed tasks have already been written to tasks-completed.md and are removed from tasks.md.
+Full overwrite of live task queue. Completed tasks are removed (already written to tasks-completed.md).
 Path: `/me/drive/root:/WorkOS/tasks.md:/content`
 
 **Write 4 -- people.md**
-Write fourth. Full overwrite. Includes all last_interaction_date updates, new people added, and stale migrations removed.
+Full overwrite. All last_interaction_date updates, new people added, stale migrations removed.
 Path: `/me/drive/root:/WorkOS/people.md:/content`
 
 **Write 5 -- people-stale.md**
-Write fifth. Only if migrations or reactivations occurred this session. Full overwrite.
+Full overwrite. Write regardless of whether migrations occurred this session.
 Path: `/me/drive/root:/WorkOS/people-stale.md:/content`
 
-**Write 6 -- state.md (base working file)**
-Write sixth. Full overwrite of settings, workstreams, open loops, muted task types.
+**Write 6 -- state.md**
+Full overwrite. Settings, workstreams, open loops, muted task types -- all current state.
 Path: `/me/drive/root:/WorkOS/state.md:/content`
 
 **Write 7 -- Daily snapshot**
-Write seventh. Snapshot of state.md content only. One file per day. Overwrite if today's file already exists.
+Snapshot of state.md content only. Overwrite if today's file already exists.
 Path: `/me/drive/root:/WorkOS/Daily/state-[MM-DD-YY].md:/content`
 
 **Write 8 -- Session log**
-Write last, after all other writes complete, so it can truthfully record write results.
-One file per day. If today's log already exists: append this session's block to it. If it does not exist: create it.
+Write last. Record the result (success or failure) of every write above. One file per day -- append if it already exists.
 Path: `/me/drive/root:/WorkOS/Logs/session-[MM-DD-YY].md:/content`
+
+**Completion confirmation to user:**
+'End-of-day save complete. 8 files written. [List any failures]. Nightly wrap-up scheduled for [nightly_wrap_time]. Next boot at 5am.'
+If any write failed: 'WARNING: [N] files failed to write -- [list]. Your data may be incomplete. Resolve before next session.'
 
 ### Write Rules
 - Never delete data from tasks-completed.md or task-library.md. These are append-only.
@@ -423,8 +454,6 @@ Path: `/me/drive/root:/WorkOS/Logs/session-[MM-DD-YY].md:/content`
 - state.md Open Loops: append-only. Items resolved this session are marked [RESOLVED] not deleted.
 - state.md Muted Task Types: append-only. Unmute only on explicit user request.
 - task-library.md sop_steps and custom_steps: both retained permanently and independently. Updating one never affects the other.
-- If any individual write fails: log the failure in the session log. Announce to user. Do not halt the session.
-- Confirm to user when all writes complete: 'State saved. [N] files written. Next boot at 5am.'
 
 ### Live-Sync Rules (writes during the session, not just at end)
 
@@ -579,9 +608,11 @@ Never ask the user to repeat a preference change. Never revert to a prior settin
 
 **Session End:**
 1. Run People Staleness check (Section 15) if not already run today.
-2. Run full session-end write sequence (Section 8) as a final sync across all files.
-3. Append session block to today's Logs/session-[MM-DD-YY].md.
-4. Confirm to user: 'State saved. [N] files written. Next boot at 5am.'
+2. Run the mandatory end-of-day full write sequence (Section 8). ALL 8 files. No exceptions.
+3. Send Nightly Wrap-Up Email via skill.md if nightly_wrap is true and wrap-up was not skipped today.
+4. Confirm to user per the completion message defined in Section 8.
+
+> Session end CANNOT be declared complete until the Section 8 write sequence finishes. If the user tries to close the session before writes complete, warn them: 'Files have not been saved yet. Writing now -- please wait.'
 
 ---
 
