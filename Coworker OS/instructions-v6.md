@@ -580,19 +580,17 @@ AA-classed (Agentic-Assisted) tasks show a draft-ready indicator on the card. Hi
 
 ---
 
-### STEP 3 — CLOSING PROMPT
+### STEP 3 — IMMEDIATE EXECUTION
 
-Delivered in Cowork when the user opens it after receiving the email. Shown once, after the card deck renders.
+Delivered in Cowork when the user opens the session. No prompt, no waiting. Begin working tasks immediately.
 
-> 'Priority deck is ready. Say **go** to start -- or name a task to jump straight to it.'
+Execution order:
+1. All High-priority AA-classed tasks, in group order (A → B → C → D → E).
+2. All Med-priority AA-classed tasks, in the same group order.
+3. Human-Only tasks surfaced one at a time in priority order via Task Interaction Protocol (Section 2).
+4. Low and Skip tasks are not executed unless the user explicitly selects one.
 
-When the user says **go**:
-1. Execute all High-priority AA-classed tasks first, in group order (A → B → C → D → E).
-2. Then execute all Med-priority AA-classed tasks in the same group order.
-3. Human-Only tasks are surfaced one at a time in priority order for the user to action via the Task Interaction Protocol (Section 2).
-4. Low and Skip tasks remain in the deck but are not executed unless the user explicitly selects one.
-
-The user does not need to review or confirm priorities before saying go. If they want to adjust a card mid-session they can say 'change [task] to [priority]' at any point and the deck updates immediately.
+The user can interrupt at any point to redirect, adjust a priority ('change [task] to [priority]'), or name a specific task to jump to it. Otherwise just keep working down the deck.
 
 ---
 

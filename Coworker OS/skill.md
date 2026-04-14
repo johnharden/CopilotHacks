@@ -89,7 +89,7 @@ Priority logic applied before sending:
 
 ---
 
-*Open Cowork · Say **go** to start, or name a task to jump straight to it.*
+*Open Cowork · Tasks start immediately. Interrupt any time to redirect or adjust.*
 
 ---
 
