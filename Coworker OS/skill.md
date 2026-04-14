@@ -23,108 +23,73 @@ Read the following before composing:
 
 ### Subject Line Format
 ```
-WorkOS | [DAY], [DATE] | [N] tasks | [N] drafts ready
+WorkOS Morning Boot — [DAY], [DATE] | [N] tasks · [N] new · [N] meeting preps
 ```
-Example: `WorkOS | Monday, Apr 14 | 7 tasks | 3 drafts ready`
+Example: `WorkOS Morning Boot — Monday, Apr 14 | 9 tasks · 3 new · 2 meeting preps`
 
 ### Body Structure
-Compose as clean HTML email. Use headers, bullets, and minimal tables. No walls of text.
-All section headers bold. Use horizontal rules between sections. Mobile-readable.
+Clean HTML. Mobile-readable. Two parts delivered in this email: Step 1 (Intelligence Summary) then Step 2 (Priority Card Deck). Step 3 is delivered in Cowork only.
 
 ---
 
-**WORKOS MORNING BRIEF**
-[DAY OF WEEK], [DATE] &nbsp;|&nbsp; [USER TIMEZONE]
-*Built by [John Harden](https://www.linkedin.com/in/john-harden/) &nbsp;|&nbsp; [Lemhi.ai](https://lemhi.ai/?ref=workos)*
+**Part 1 — Intelligence Summary**
+
+Plain text block. Bullets only. Omit any section with nothing to report -- do not write 'None.'
+
+```
+WorkOS Morning Boot — [Day, Date]
+Boot completed at [time] [timezone].
+
+Files: state.md [OK/WARN] · tasks.md [OK/WARN] · library [OK/WARN] · people [OK/WARN]
+[If any WARN: one-line note on what failed.]
+
+Calendar shifts since yesterday
+- [bullet per change: time moves, new events, cancellations, attendee changes]
+
+Key signals overnight
+- [bullet per notable item: agreements, alerts, decisions, commitments made in email/DM]
+- [include: VIP appearances, stale delegations, people moved to stale, SOP updates]
+
+Loops closed
+- [open loops resolved by this boot's scan]
+
+[N] tasks total — priority deck below.
+```
 
 ---
 
-**FILES LOADED**
-State: [OK/WARN] &nbsp;|&nbsp; Tasks: [OK/WARN] &nbsp;|&nbsp; Library: [OK/WARN] &nbsp;|&nbsp; People: [OK/WARN]
-> If any file shows WARN: include a one-line note explaining what was missing or failed.
+**Part 2 — Priority Card Deck**
+
+Rendered as an Adaptive Card. Five groups, always in this order. Hide empty groups entirely.
+
+**Header:** Morning Priority Deck — [Day, Date]
+**Subheader:** Pre-prioritized by Copilot. Edit any that need adjusting. [N] tasks total ([Y] carry-forward · [Z] meeting preps · [W] new).
+
+Groups:
+- **A — Today's Meetings** | Meeting preps sorted by start time
+- **B — Overdue / Due Today** | Missed deadlines + same-day commitments
+- **C — This Week** | Due by end of Friday
+- **D — Active / No Deadline** | Open tasks, no firm date
+- **E — Quick / Lightweight** | Sub-5-minute items, self-email extractions
+
+Each task card:
+- **[Task name]** (bold, action-oriented -- rewrite passive names)
+- Workstream badge &nbsp;|&nbsp; People: [name, role/company]
+- Badge: 🔴 Today/Overdue &nbsp;|&nbsp; 🟠 This week &nbsp;|&nbsp; 🔵 Informational &nbsp;|&nbsp; ⚪ TBD
+- *Why now:* [one line -- reason it's on today's deck, not a description of the task]
+- **NEW** (if not present in yesterday's task list)
+- Priority: **High** / **Med** / **Low** / **Skip**
+- ✏️ Draft ready (if AA-classed with a first pass prepared)
+
+Priority logic applied before sending:
+- High → today's meeting preps, overdue, 48-hr deadlines, already-committed actions
+- Med → this-week deadlines, active partner/investor tasks, open loops 48h+
+- Low → no-deadline tasks, FYI items, lightweight extractions
+- Skip → no clear action, duplicates, noise (Copilot flags; user confirms in Cowork)
 
 ---
 
-**WORKSTREAMS**
-[count] active &nbsp;|&nbsp; [count] stale &nbsp;|&nbsp; [count] completed since last boot
-> List stale workstreams by name if any exist.
-
----
-
-**TASKS FOR TODAY**
-One row per task in the Todo column of tasks.md, ordered by priority.
-
-| # | Task | Type | Workstream | Est. Time | AI First Pass |
-|---|------|------|-----------|-----------|---------------|
-| 1 | [task name] | [type] | [workstream] | [avg from library or --] | [one-line summary of first pass] |
-| 2 | ... | | | | |
-
-> For tasks on the never_auto_draft_list: AI First Pass column shows 'Requires your judgment.'
-> For unknown task types: AI First Pass column shows 'First pass unverified -- review in Cowork.'
-> Include In Progress and Blocked tasks below the Todo list as a separate short table if any exist.
-
----
-
-**DRAFTS READY FOR REVIEW**
-Tasks in the Agentic Queue with status Pending Review. These have a full draft waiting.
-
-| Task | Type | Workstream | Draft Summary |
-|------|------|-----------|---------------|
-| [task name] | [type] | [workstream] | [one-sentence draft summary] |
-
-> Footer: 'Open Cowork and say "open [task name]" to review any draft.'
-
----
-
-**QUICK TODOS**
-Human-Only tasks ready to execute with pre-printed steps.
-
-For each Quick Todo:
-- **[Task Name]** | Est: [time]
-  1. [step 1]
-  2. [step 2]
-  [tool: [tool name] -- [URL] if requires_third_party]
-
----
-
-**DELEGATED TASKS**
-> Only include if active delegations exist.
-
-| Task | Delegated To | Date | Days Out | Status |
-|------|-------------|------|----------|--------|
-| [task] | [person] | [date] | [N] days | [status] |
-
-> Flag any row where Days Out >= 3 in bold as: **STALE -- follow up today**
-
----
-
-**OPEN LOOPS**
-> Only include if Open Loops exist in state.md.
-
-| Item | Age | Flag |
-|------|-----|------|
-| [item] | [N days] | [UNKNOWN TASK TYPE / NEEDS DEFINITION / FOLLOW UP] |
-
----
-
-**PEOPLE RADAR**
-> Only include if VIPs appear in today's tasks OR stale delegations exist OR people were migrated to stale.
-
-- VIPs in today's context: [name(s)]
-- Stale delegations: [name -- task -- N days]
-- Moved to stale today: [name(s)] (no interaction in 30+ days)
-
----
-
-**MUTED TASKS**
-> Only include if Muted Task Types exist. Keep brief.
-
-[type] | muted [date] | suppressed [N] times &nbsp;&nbsp; (repeat per entry)
-*Say "unmute [type]" in Cowork to restore.*
-
----
-
-*Open Cowork to work through tasks interactively.*
+*Open Cowork · Say **go** to execute all High and Med AA-classed tasks in order.*
 
 ---
 

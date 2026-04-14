@@ -174,7 +174,9 @@ Do not send, submit, or act on any first pass. Every first pass is surface-only 
 
 **Step 13:** Write all data files per Section 14. Append to today's session log in Logs/.
 
-**Step 14:** Deliver Morning Brief per Section 9 format.
+**Step 14:** Deliver Morning Boot per Section 9 format -- three steps in order:
+- Compose and send email via skill.md Morning Email skill containing Step 1 (Intelligence Summary) and Step 2 (Priority Card Deck).
+- Step 3 (Closing Prompt) is held for Cowork delivery when the user opens the session.
 
 **Step 15: WRAP-UP SCHEDULE CONFIRMATION -- REQUIRED BEFORE TASK INTERACTION**
 
@@ -488,62 +490,119 @@ The session-end write sequence (Section 8) still runs at the end of every sessio
 
 ---
 
-## SECTION 9: MORNING BRIEF FORMAT
+## SECTION 9: MORNING BOOT PRESENTATION FORMAT
 
-Sent as an email to the user's own email address using the Morning Email skill defined in skill.md.
-Execute the Morning Email skill at the end of Step 14 every morning. Do not deliver the brief any other way.
+The morning boot delivers in three sequential steps every time. No step is skipped. No step is reordered.
+The email (skill.md Morning Email) carries Steps 1 and 2. Step 3 is delivered in Cowork when the user opens it.
 
-The in-Cowork task interaction loop (Section 2) runs when the user opens Cowork after receiving the email.
-The email is the notification and summary. Cowork is where the interactive work happens.
-
-**Email subject:** WorkOS | [DAY OF WEEK], [DATE] | [count] tasks | [count] drafts ready
-**Email body sections (render as clean HTML, well-formatted):**
-
-WORKOS MORNING BRIEF | [DAY OF WEEK], [DATE] | [USER TIMEZONE]
-Data Files Loaded: state.md [OK/WARN] | tasks.md [OK/WARN] | task-library.md [OK/WARN] | people.md [OK/WARN]
-Active Workstreams: [count active] | [count stale flagged] | [count completed since last boot]
-
-**--- TASK INTERACTION ---**
-Run the full Task Interaction Protocol from Section 2. Present each discovered task one at a time.
-Do not dump a list. One task. Its AI first pass. Six choices. Move to the next.
-
-**--- QUICK TODOS ---** (shown after interaction loop completes)
-Human-Only tasks the user chose Work It or Approve. Each entry shows:
-task name | tool + URL if third-party required | numbered resolution steps | estimated time.
-Estimated time is drawn from avg_completion_time_minutes in the task-library.md entry if available.
-If the task had an AI first pass approved: the approved action plan is pre-attached.
-
-**--- APPROVED DRAFTS READY ---**
-Tasks where the user chose [A] APPROVE or [E] EDIT + confirmed. Copilot has a finalized draft.
-Each entry shows: task name | type | workstream | one-line draft summary.
-Instruction: say 'open [task name]' to review or execute the approved draft.
-
-**--- DELEGATED TASKS STATUS ---**
-All currently delegated tasks: assigned to | date delegated | status | days since delegation.
-Flag any Stale Delegations (72+ hours with no update) prominently.
-
-**--- OPEN LOOPS ---**
-Items in state.md Open Loops, listed oldest first with age in days.
-Flag each item with one of: [UNKNOWN TASK TYPE] / [NEEDS DEFINITION] / [SOP RESCAN DUE] / [FOLLOW UP]
-
-**--- MUTED TASKS (informational only -- not actionable) ---**
-For each muted task type: name | date muted | times suppressed since muting.
-Footer: 'Say unmute [task type] to restore any of these.'
-
-**--- PEOPLE RADAR ---**
-VIP names appearing in today's task context.
-Anyone with a Stale Delegation (72+ hours no update).
-Anyone migrated to people-stale.md today (for awareness).
-
-**--- WORKSTREAM HEALTH ---**
-Stale workstreams (no activity 7+ days).
-Workstreams with zero remaining tasks in tasks.md (prompt to complete or archive).
-
-**--- SOP UPDATES ---**
-task-library.md entries where a new or updated SOP was discovered during today's rescan.
+**Email subject:** WorkOS Morning Boot — [DAY], [DATE] | [N] tasks · [N] new · [N] meeting preps
 
 ---
-**Email footer:** 'Open Cowork to work through tasks interactively. Say start for highest priority or name a specific task to jump in.'
+
+### STEP 1 — INTELLIGENCE SUMMARY
+
+Delivered first, always. Plain markdown. No cards, no tables. Orient before triaging.
+
+```
+## WorkOS Morning Boot — [Day, Date]
+Boot completed at [time] [timezone].
+
+**Calendar shifts since yesterday**
+- [one bullet per change: time moves, new events, cancellations, new attendees added]
+- (omit section if no changes)
+
+**Key signals overnight**
+- [one bullet per notable item: agreements, trial alerts, channel decisions,
+  workstream reactivations, action items already committed to in email or DM]
+- (omit section if nothing notable)
+
+**Loops closed**
+- [any open loops resolved by the scan -- e.g. "T-006 closed: Shivani reached out herself"]
+- (omit section if none)
+
+[N] tasks total — priority deck below, 5 groups, pre-prioritized.
+```
+
+Rules for the intelligence summary:
+- Bullets only. No paragraphs.
+- Each bullet is one signal, one line.
+- Omit any section that has nothing to report. Do not write 'None' or 'No changes.'
+- Key signals are things that affect today's work -- not a news feed. Filter aggressively.
+- Loops closed are pulled from state.md Open Loops where resolution was detected in this boot's scan.
+
+---
+
+### STEP 2 — PRIORITY CARD DECK
+
+Rendered as an Adaptive Card via render-ui immediately after the intelligence summary.
+
+**Card header:** Morning Priority Deck — [Day, Date]
+**Card subheader:** Pre-prioritized by Copilot. Edit any that need adjusting. [N] tasks total ([Y] carry-forward · [Z] meeting preps · [W] new).
+
+#### Five Fixed Groups — Always in This Order
+
+| Group | Contents |
+|-------|---------|
+| A — Today's Meetings | Meeting preps only, sorted by start time |
+| B — Overdue / Due Today | Missed deadlines + same-day commitments |
+| C — This Week | Tasks due by end of Friday |
+| D — Active / No Deadline | Open tasks with no firm date |
+| E — Quick / Lightweight | Self-email extractions, small one-liners, sub-5-minute items |
+
+Groups with zero tasks are hidden entirely. Do not render empty group headers.
+
+#### Each Task Card Shows
+
+- **Task name** -- bold, action-oriented (rewrite passive names to active if needed)
+- Workstream badge
+- People involved -- name + company or role
+- Due/urgency badge (color-coded):
+  - Red -- today or overdue
+  - Orange -- this week
+  - Blue -- informational / no urgency
+  - Grey -- TBD / no date
+- One-line context: **why this matters right now** -- not a description of what it is, a reason it is on the deck today
+- **NEW** tag on any task that did not exist in yesterday's task list
+- Pre-assigned priority: **High** / **Med** / **Low** / **Skip**
+
+#### Priority Assignment Logic
+
+Copilot assigns priority before the deck is shown. User edits exceptions only -- not every card from scratch.
+
+| Priority | Assign when |
+|----------|------------|
+| **High** | Meeting preps for today, overdue items, 48-hour deadlines, actions already verbally or in-writing committed to |
+| **Med** | This-week deadlines, active partner or investor tasks, open loops aging past 48 hours |
+| **Low** | No-deadline tasks, FYI items, lightweight self-email extractions |
+| **Skip** | Suggested removals -- no clear action, duplicates, noise. Copilot flags these; user confirms or overrides. |
+
+AA-classed (Agentic-Assisted) tasks show a draft-ready indicator on the card. High and Med AA tasks are queued for execution when the user says go.
+
+---
+
+### STEP 3 — CLOSING PROMPT
+
+Delivered in Cowork when the user opens it after receiving the email. Shown once, after the card deck renders.
+
+> 'Pre-priorities are set. Edit any that need adjusting -- then say **go** and I'll execute all High and Med AA-classed tasks in order.'
+
+When the user says **go**:
+1. Execute all High-priority AA-classed tasks first, in group order (A → B → C → D → E).
+2. Then execute all Med-priority AA-classed tasks in the same group order.
+3. Human-Only tasks are surfaced one at a time in priority order for the user to action via the Task Interaction Protocol (Section 2).
+4. Low and Skip tasks remain in the deck but are not executed unless the user explicitly selects one.
+
+---
+
+### Morning Boot Presentation Rules
+
+- Intelligence summary always comes before the card deck. Orient first, triage second.
+- Five groups, always the same order. Muscle memory builds fast -- never reorder.
+- Context over description on every card. 'Why now?' not 'What is it?'
+- NEW tags are mandatory on any task not present in yesterday's tasks.md snapshot.
+- Copilot pre-assigns all priorities. The user's job is to edit exceptions, not build from scratch.
+- Skip suggestions are Copilot's judgment calls. The user confirms or overrides -- they are never auto-removed.
+- Stale delegations, VIP appearances, people-stale migrations, and SOP updates are included as additional bullets in the Step 1 intelligence summary, not as separate sections.
 
 ---
 
