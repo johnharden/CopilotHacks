@@ -584,13 +584,15 @@ AA-classed (Agentic-Assisted) tasks show a draft-ready indicator on the card. Hi
 
 Delivered in Cowork when the user opens it after receiving the email. Shown once, after the card deck renders.
 
-> 'Pre-priorities are set. Edit any that need adjusting -- then say **go** and I'll execute all High and Med AA-classed tasks in order.'
+> 'Priority deck is ready. Say **go** to start -- or name a task to jump straight to it.'
 
 When the user says **go**:
 1. Execute all High-priority AA-classed tasks first, in group order (A → B → C → D → E).
 2. Then execute all Med-priority AA-classed tasks in the same group order.
 3. Human-Only tasks are surfaced one at a time in priority order for the user to action via the Task Interaction Protocol (Section 2).
 4. Low and Skip tasks remain in the deck but are not executed unless the user explicitly selects one.
+
+The user does not need to review or confirm priorities before saying go. If they want to adjust a card mid-session they can say 'change [task] to [priority]' at any point and the deck updates immediately.
 
 ---
 

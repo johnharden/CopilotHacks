@@ -89,7 +89,7 @@ Priority logic applied before sending:
 
 ---
 
-*Open Cowork · Say **go** to execute all High and Med AA-classed tasks in order.*
+*Open Cowork · Say **go** to start, or name a task to jump straight to it.*
 
 ---
 
