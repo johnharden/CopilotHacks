@@ -11,15 +11,9 @@
 > This file is the one-time WorkOS onboarding protocol.
 > It is loaded only when no WorkOS data file exists and no prior onboarding has been completed.
 >
-> REQUIRED FILES FOR THIS SESSION -- all three must be attached before proceeding:
->   1. instructions-v6.md  (operating rules -- you are reading the result of loading this)
+> REQUIRED FILES FOR THIS SESSION -- both must be attached before proceeding:
+>   1. instructions-v6.md  (operating rules and email skills -- you are reading the result of loading this)
 >   2. onboard-v6.md       (this file)
->   3. skill.md            (email skills -- required for morning brief and nightly wrap-up delivery)
->
-> If skill.md is not attached: stop immediately. Tell the user:
-> 'skill.md is missing from this session. Please attach skill.md alongside instructions-v6.md
-> and onboard-v6.md and restart. All three files are required to complete onboarding.'
-> Do not proceed until all three are confirmed present.
 >
 > instructions.md defines all operational rules. This file's only job is to collect the data
 > needed to generate data.md -- the single WorkOS data file.
@@ -52,7 +46,6 @@
 > to `OneDrive > WorkOS`. The only valid write targets are:
 > - `OneDrive > WorkOS > data.md`
 > - `OneDrive > WorkOS > instructions.md`
-> - `OneDrive > WorkOS > skill.md`
 > - `OneDrive > WorkOS > onboard.md`
 > - `OneDrive > WorkOS > Daily > data-[MM-DD-YY].md`
 > - `OneDrive > WorkOS > Logs > session-[MM-DD-YY].md`
@@ -345,7 +338,8 @@ Present as a bullet list:
 > Do not proceed to synthesis if any item is unconfirmed.
 > If an item is not ready, tell the user exactly what needs to happen to resolve it first.
 
-- [ ] All three required files are attached to this session: instructions-v6.md, onboard-v6.md, skill.md
+- [ ] Both required files are attached to this session: instructions-v6.md, onboard-v6.md
+- [ ] Both files confirmed loaded: instructions-v6.md and onboard-v6.md
 - [ ] Sections 2 through 8 completed -- user has engaged with each topic and confirmed the summary for each
 - [ ] Active workstream list confirmed from Section 2 discovery
 - [ ] Top collaborators list confirmed -- these seed data.md ## People
@@ -423,8 +417,7 @@ In this exact order:
 
 Static system files first (read from session-attached copies):
   A. OneDrive > WorkOS > instructions.md  (write from the attached instructions-v6.md)
-  B. OneDrive > WorkOS > skill.md         (write from the attached skill.md)
-  C. OneDrive > WorkOS > onboard.md       (write from this file, with STATUS: COMPLETE | [DATE] prepended)
+  B. OneDrive > WorkOS > onboard.md       (write from this file, with STATUS: COMPLETE | [DATE] prepended)
 
 Data file:
   D. OneDrive > WorkOS > data.md          (the single data file generated in Step 3)

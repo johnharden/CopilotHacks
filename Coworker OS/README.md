@@ -16,26 +16,20 @@ Over time it learns how you work. Every task type you handle gets added to a liv
 
 ## How It Works
 
-Three files load into every Copilot Cowork session:
+Two files load into every Copilot Cowork session:
 
 | File | Purpose |
 |------|---------|
-| `instructions-v6.md` | The operating brain. Defines every rule. Never edited. |
+| `instructions-v6.md` | The operating brain. Defines every rule and email skills. Never edited. |
 | `onboard-v6.md` | One-time setup. Run once, never again. |
-| `skill.md` | Email skills for morning brief and nightly wrap-up delivery. |
 
-Six data files live in OneDrive and are managed automatically:
+One data file lives in OneDrive and is managed automatically:
 
 | File | What Lives Here |
 |------|----------------|
-| `state.md` | Settings, workstreams, open loops, muted task types |
-| `tasks.md` | Live task queue — Todo, In Progress, Blocked |
-| `tasks-completed.md` | Append-only log of every completed task and how it was resolved |
-| `task-library.md` | Ever-growing library of task types, SOPs, custom steps, and completion learnings |
-| `people.md` | Active people registry |
-| `people-stale.md` | Contacts with no interaction in 30+ days, migrated automatically |
+| `data.md` | Everything: settings, workstreams, tasks, completed tasks, task library, people, stale people, open loops, muted task types |
 
-Session logs write to `OneDrive > Coworker OS > Logs > session-[date].md` after each session.
+Session logs write to `OneDrive > WorkOS > Logs > session-[date].md` after each session.
 
 ---
 
@@ -44,7 +38,7 @@ Session logs write to `OneDrive > Coworker OS > Logs > session-[date].md` after 
 1. **5am** — Boot runs automatically. Scans 8 sources. Takes a first pass at every task.
 2. **Morning email** — Brief arrives in your inbox with tasks, drafts, and quick todos.
 3. **You open Cowork** — Work through tasks interactively. Approve, edit, delegate, snooze, or won't-do each one.
-4. **Session end** — All six data files updated. Session logged.
+4. **Session end** — data.md updated. Session logged.
 5. **Nightly email** *(optional)* — Wrap-up summary of what got done and what's next.
 
 ---
@@ -52,7 +46,7 @@ Session logs write to `OneDrive > Coworker OS > Logs > session-[date].md` after 
 ## Setup
 
 1. Clone or download this folder.
-2. In a new Copilot Cowork session, attach three files: `instructions-v6.md`, `onboard-v6.md`, and `skill.md`.
+2. In a new Copilot Cowork session, attach two files: `instructions-v6.md` and `onboard-v6.md`.
 3. Coworker OS will scan your M365 activity, ask a few free-form questions, and build your data files automatically.
 4. Onboarding takes about 15 minutes. After that, the 5am trigger handles everything.
 

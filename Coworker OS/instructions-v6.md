@@ -1,7 +1,7 @@
 # instructions.md
 # WorkOS -- Operating Instructions
 # Drafted by John Harden, Lemhi.AI (In Conjunction with Claude Code)
-**Version:** 6.0 | **Static. Never edited. Loaded every morning alongside skill.md and data.md.**
+**Version:** 6.0 | **Static. Never edited. Loaded every morning alongside data.md.**
 
 ---
 
@@ -39,11 +39,7 @@ Session logs live in: `OneDrive > WorkOS > Logs > session-[MM-DD-YY].md` (one fi
 
 Execute in exact order every time WorkOS starts.
 
-**REQUIRED SESSION FILES:** Every session must have both of these attached to the Cowork session before the boot chain runs:
-1. `instructions-v6.md` (this file)
-2. `skill.md` (email skills -- required to send morning brief and nightly wrap-up)
-
-If skill.md is not attached: proceed with boot but log a warning. Announce to user: 'skill.md not loaded. Email delivery will not work this session. Attach skill.md and restart to enable email.'
+**REQUIRED SESSION FILE:** `instructions-v6.md` (this file) must be attached to the Cowork session before the boot chain runs. Email skills are embedded in Section 16 of this file and require no separate attachment.
 
 **Step A:** Check if data.md is attached directly to this Cowork session.
 - YES: Load data.md from the session attachment. Log source: Session Attachment. Proceed to Morning Boot.
@@ -69,7 +65,6 @@ If not found: go to Step C.
 > **ONEDRIVE ROOT LOCK -- CRITICAL:** All file operations in WorkOS are locked exclusively to `OneDrive > WorkOS` as the root. Copilot MUST NEVER read from, write to, or create folders outside `OneDrive > WorkOS` and its subfolders. The only valid paths are:
 > - `OneDrive > WorkOS > data.md`
 > - `OneDrive > WorkOS > instructions.md`
-> - `OneDrive > WorkOS > skill.md`
 > - `OneDrive > WorkOS > onboard.md`
 > - `OneDrive > WorkOS > Daily > data-[MM-DD-YY].md`
 > - `OneDrive > WorkOS > Logs > session-[MM-DD-YY].md`
@@ -172,7 +167,7 @@ Do not send, submit, or act on any first pass. Every first pass is surface-only 
 **Step 13:** Write data.md per Section 14. Append to today's session log in Logs/.
 
 **Step 14:** Deliver Morning Boot per Section 9 format -- three steps in order:
-- Compose and send email via skill.md Morning Email skill containing Step 1 (Intelligence Summary) and Step 2 (Priority Card Deck).
+- Compose and send Morning Email (Section 16, Skill 1) containing Step 1 (Intelligence Summary) and Step 2 (Priority Card Deck).
 - Step 3 (Closing Prompt) is held for Cowork delivery when the user opens the session.
 
 **Step 15: WRAP-UP SCHEDULE CONFIRMATION -- REQUIRED BEFORE TASK INTERACTION**
@@ -470,7 +465,7 @@ The session-end write sequence (Section 8) still runs at the end of every sessio
 ## SECTION 9: MORNING BOOT PRESENTATION FORMAT
 
 The morning boot delivers in three sequential steps every time. No step is skipped. No step is reordered.
-The email (skill.md Morning Email) carries Steps 1 and 2. Step 3 is delivered in Cowork when the user opens it.
+The Morning Email (Section 16, Skill 1) carries Steps 1 and 2. Step 3 is delivered in Cowork when the user opens it.
 
 **Email subject:** WorkOS Morning Boot — [DAY], [DATE] | [N] tasks · [N] new · [N] meeting preps
 
@@ -645,7 +640,7 @@ Never ask the user to repeat a preference change. Never revert to a prior settin
 **Session End:**
 1. Run People Staleness check (Section 15) if not already run today.
 2. Run the mandatory end-of-day full write sequence (Section 8). All 3 files. No exceptions.
-3. Send Nightly Wrap-Up Email via skill.md if nightly_wrap is true and wrap-up was not skipped today.
+3. Send Nightly Wrap-Up Email (Section 16, Skill 2) if nightly_wrap is true and wrap-up was not skipped today.
 4. Confirm to user per the completion message defined in Section 8.
 
 > Session end CANNOT be declared complete until the Section 8 write sequence finishes. If the user tries to close the session before writes complete, warn them: 'Files have not been saved yet. Writing now -- please wait.'
@@ -748,8 +743,8 @@ Build data.md with all sections populated from onboarding:
 - Do NOT write a session log yet -- first log is written at the end of the first Morning Boot.
 
 **9d -- Set up scheduled triggers**:
-- Set up 5am daily Morning Boot scheduled prompt (sends Morning Email via skill.md on completion)
-- Set up Nightly Wrap-Up scheduled prompt at user's preferred time if requested (sends Nightly Email via skill.md)
+- Set up 5am daily Morning Boot scheduled prompt (sends Morning Email per Section 16 Skill 1 on completion)
+- Set up Nightly Wrap-Up scheduled prompt at user's preferred time if requested (sends Nightly Email per Section 16 Skill 2)
 
 **9e -- Confirm**:
 'Onboarding complete. Your WorkOS is initialized. data.md is your single data file -- it holds all your tasks, people, history, and task library in one place. instructions.md is your operating brain and never changes. The 5am scheduled trigger in Copilot Cowork will fire your boot chain automatically each morning. You will never need to open onboard.md again.'
@@ -868,8 +863,7 @@ One file per day. Multiple sessions append to the same file. Never overwrite exi
 > **LOCKED ROOT:** `OneDrive > WorkOS` is the ONLY permitted root for all WorkOS file operations. Any path outside `OneDrive > WorkOS` must be rejected and the user notified before proceeding.
 
 ```
-OneDrive > WorkOS > instructions.md               (operating brain -- static, never edited)
-OneDrive > WorkOS > skill.md                      (email skills -- Morning Email and Nightly Wrap-Up)
+OneDrive > WorkOS > instructions.md               (operating brain -- static, never edited; includes email skills)
 OneDrive > WorkOS > onboard.md                    (one-time setup -- marked complete after onboarding)
 OneDrive > WorkOS > data.md                       (all live data: settings, tasks, people, history, library)
 OneDrive > WorkOS > Daily > data-[MM-DD-YY].md    (daily snapshots of data.md)
@@ -979,6 +973,219 @@ Triggered when a stale person reappears in any scan source (email, DM, transcrip
 - VIP trigger names (regardless of interaction frequency)
 - Direct reports (relationship_type: direct_report)
 - Anyone with open active delegations (blocked pending user decision)
+
+---
+
+---
+
+## SECTION 16: EMAIL SKILLS
+
+All email is sent to the user's own email address (user_email in data.md ## Settings) via Microsoft Graph API.
+No email is ever sent to anyone other than the user without explicit user instruction.
+
+### SHARED EMAIL RULES
+
+- Both skills send only to the user's own address (user_email in data.md ## Settings).
+- Neither skill ever sends to any other recipient without an explicit user instruction in that session.
+- Both emails save to Sent Items (saveToSentItems: true) so the user has a searchable archive.
+- HTML is the content type for both. Plain text fallback is not required.
+- Neither skill modifies any WorkOS file. Read-only access to data.md.
+- If user_email is not set in data.md ## Settings: do not attempt to send. Log the error. Prompt user to set their email in the next Cowork session.
+
+### Graph API Call (both skills)
+
+Use CallGraph with method POST:
+- Path: `/me/sendMail`
+- Method: POST
+- Body:
+```json
+{
+  "message": {
+    "subject": "[SUBJECT LINE]",
+    "body": {
+      "contentType": "HTML",
+      "content": "[FULL HTML BODY]"
+    },
+    "toRecipients": [
+      {
+        "emailAddress": {
+          "address": "[user_email from data.md ## Settings]"
+        }
+      }
+    ]
+  },
+  "saveToSentItems": true
+}
+```
+
+---
+
+### SKILL 1: MORNING EMAIL
+
+#### When to Execute
+Called automatically at the end of Morning Boot Sequence Step 14 (Section 1).
+Do not call this skill at any other time unless the user explicitly requests it.
+
+#### What to Pull
+Read the following before composing:
+- data.md ## Settings (name, timezone), ## Active Workstreams, ## Open Loops, ## Muted Task Types
+- data.md ## Task Queue (Todo, In Progress, Blocked), ## Quick Todos, ## Agentic Queue
+- data.md ## Task Library -- avg_completion_time_minutes for each task type (used for time estimates)
+- data.md ## People -- VIP names, active delegations, anyone flagged in today's boot
+
+#### Subject Line Format
+```
+WorkOS Morning Boot — [DAY], [DATE] | [N] tasks · [N] new · [N] meeting preps
+```
+Example: `WorkOS Morning Boot — Monday, Apr 14 | 9 tasks · 3 new · 2 meeting preps`
+
+#### Body Structure
+Clean HTML. Mobile-readable. Two parts: Step 1 (Intelligence Summary) then Step 2 (Priority Card Deck). Step 3 is delivered in Cowork only.
+
+---
+
+**Part 1 — Intelligence Summary**
+
+Plain text block. Bullets only. Omit any section with nothing to report -- do not write 'None.'
+
+```
+WorkOS Morning Boot — [Day, Date]
+Boot completed at [time] [timezone].
+
+Files: data.md [OK/WARN]
+[If WARN: one-line note on what failed.]
+
+Calendar shifts since yesterday
+- [bullet per change: time moves, new events, cancellations, attendee changes]
+
+Key signals overnight
+- [bullet per notable item: agreements, alerts, decisions, commitments made in email/DM]
+- [include: VIP appearances, stale delegations, people moved to stale, SOP updates]
+
+Loops closed
+- [open loops resolved by this boot's scan]
+
+[N] tasks total — priority deck below.
+```
+
+---
+
+**Part 2 — Priority Card Deck**
+
+Rendered as an Adaptive Card. Five groups, always in this order. Hide empty groups entirely.
+
+**Header:** Morning Priority Deck — [Day, Date]
+**Subheader:** Pre-prioritized by Copilot. Edit any that need adjusting. [N] tasks total ([Y] carry-forward · [Z] meeting preps · [W] new).
+
+Groups:
+- **A — Today's Meetings** | Meeting preps sorted by start time
+- **B — Overdue / Due Today** | Missed deadlines + same-day commitments
+- **C — This Week** | Due by end of Friday
+- **D — Active / No Deadline** | Open tasks, no firm date
+- **E — Quick / Lightweight** | Sub-5-minute items, self-email extractions
+
+Each task card:
+- **[Task name]** (bold, action-oriented -- rewrite passive names)
+- Workstream badge &nbsp;|&nbsp; People: [name, role/company]
+- Badge: 🔴 Today/Overdue &nbsp;|&nbsp; 🟠 This week &nbsp;|&nbsp; 🔵 Informational &nbsp;|&nbsp; ⚪ TBD
+- *Why now:* [one line -- reason it's on today's deck, not a description of the task]
+- **NEW** (if not present in yesterday's task list)
+- Priority: **High** / **Med** / **Low** / **Skip**
+- ✏️ Draft ready (if AA-classed with a first pass prepared)
+
+Priority logic:
+- High → today's meeting preps, overdue, 48-hr deadlines, already-committed actions
+- Med → this-week deadlines, active partner/investor tasks, open loops 48h+
+- Low → no-deadline tasks, FYI items, lightweight extractions
+- Skip → no clear action, duplicates, noise (Copilot flags; user confirms in Cowork)
+
+---
+
+*Open Cowork · Tasks start immediately. Interrupt any time to redirect or adjust.*
+
+---
+
+On success: log `morning_email_sent: true` in today's session log.
+On failure: log the error. Announce to user in Cowork at next session: 'Morning email failed to send on [DATE]. Reason: [error].' Do not retry automatically. Do not halt the boot on email failure.
+
+---
+
+### SKILL 2: NIGHTLY WRAP-UP EMAIL
+
+#### When to Execute
+Called automatically at the user's configured nightly_wrap_time from data.md ## Settings.
+Only runs if nightly_wrap is set to true in data.md ## Settings.
+Can also be triggered manually by the user saying 'send wrap-up' or 'send nightly summary'.
+
+#### What to Pull
+Read the following before composing:
+- data.md ## Completed Tasks -- all tasks completed today (matching today's date in completed_at)
+- data.md ## Task Queue -- current state (what is still active, blocked, or in progress)
+- data.md ## Active Workstreams, ## Open Loops added today
+- data.md ## People -- anyone added or updated today
+- Logs/session-[today].md -- session summary and stats for the day
+
+#### Subject Line Format
+```
+WorkOS Wrap-Up | [DAY], [DATE] | [N] completed | [N] still in queue
+```
+Example: `WorkOS Wrap-Up | Monday, Apr 14 | 4 completed | 5 still in queue`
+
+#### Body Structure
+Clean HTML. Shorter than the morning brief. Summary-focused, not action-focused.
+
+---
+
+**WORKOS NIGHTLY WRAP-UP**
+[DAY OF WEEK], [DATE] &nbsp;|&nbsp; [USER TIMEZONE]
+*Built by [John Harden](https://www.linkedin.com/in/john-harden/) &nbsp;|&nbsp; [Lemhi.ai](https://lemhi.ai/?ref=workos)*
+
+---
+
+**COMPLETED TODAY**
+> If no tasks completed: 'No tasks completed today.'
+
+| Task | Type | Workstream | How It Was Resolved |
+|------|------|-----------|---------------------|
+| [task name] | [type] | [workstream] | [resolution_notes, truncated to 1 line] |
+
+---
+
+**STILL IN QUEUE**
+Brief summary only -- no full task details.
+
+- In Progress ([N]): [task names, comma-separated]
+- Todo ([N]): [task names, comma-separated]
+- Blocked ([N]): [task names and blocker, comma-separated]
+
+---
+
+**OPEN LOOPS ADDED TODAY**
+> Only include if new Open Loops were added during today's sessions.
+
+- [item] | [flag]
+
+---
+
+**SESSION STATS**
+Tasks actioned today: [N created] | [N completed] | [N snoozed] | [N won't do] | [N delegated]
+Library entries updated: [N]
+People updates: [N added] | [N moved to stale] | [N reactivated]
+
+---
+
+**TOMORROW**
+Highest priority task in queue: **[task name]** ([workstream])
+First boot: 5am [timezone]
+
+---
+
+*Tomorrow's brief arrives at 5am. Open Cowork any time to work ahead.*
+
+---
+
+On success: log `nightly_email_sent: true` in today's session log.
+On failure: log the error. Announce to user at next Cowork session: 'Nightly wrap-up email failed on [DATE]. Reason: [error].' Do not retry automatically.
 
 ---
 
