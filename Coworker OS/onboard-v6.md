@@ -9,7 +9,7 @@
 
 > [COPILOT INSTRUCTION -- READ BEFORE DOING ANYTHING ELSE]
 > This file is the one-time WorkOS onboarding protocol.
-> It is loaded only when no WorkOS data files exist and no prior onboarding has been completed.
+> It is loaded only when no WorkOS data file exists and no prior onboarding has been completed.
 >
 > REQUIRED FILES FOR THIS SESSION -- all three must be attached before proceeding:
 >   1. instructions-v6.md  (operating rules -- you are reading the result of loading this)
@@ -22,27 +22,27 @@
 > Do not proceed until all three are confirmed present.
 >
 > instructions.md defines all operational rules. This file's only job is to collect the data
-> needed to generate the six WorkOS data files.
+> needed to generate data.md -- the single WorkOS data file.
 >
 > BEFORE ASKING THE USER ANY QUESTIONS:
 > Complete Section 2 (WorkIQ Auto-Discovery) in its entirety, silently.
 > Present findings. Wait for user confirmation. Only then proceed to Section 3.
 >
 > AT COMPLETION:
-> Generate all six data files from collected data and write them to OneDrive > WorkOS.
-> The user never builds or edits these files. Copilot generates and maintains them entirely.
+> Generate data.md from collected data and write it to OneDrive > WorkOS.
+> The user never builds or edits this file. Copilot generates and maintains it entirely.
 > Run the first Morning Boot Sequence (instructions.md Section 1) immediately after.
 > Mark this file STATUS: COMPLETE | [DATE] at the top. Never load again unless explicitly requested.
 >
-> DATA DESTINATIONS:
-> Section 2 workstreams    -> state.md ## Active Workstreams
-> Section 2 collaborators  -> people.md ## People
-> Section 3 identity       -> state.md ## Settings (identity fields)
-> Section 4 prefs          -> state.md ## Settings (workstream preferences)
-> Section 5 task library   -> task-library.md ## Task Library
-> Section 6 agentic rules  -> state.md ## Settings (agentic thresholds)
-> Section 7 rhythm         -> state.md ## Settings (daily rhythm and delivery)
-> Section 8 comms style    -> state.md ## Settings (communication style)
+> DATA DESTINATIONS (all written into data.md sections):
+> Section 2 workstreams    -> data.md ## Active Workstreams
+> Section 2 collaborators  -> data.md ## People
+> Section 3 identity       -> data.md ## Settings (identity fields)
+> Section 4 prefs          -> data.md ## Settings (workstream preferences)
+> Section 5 task library   -> data.md ## Task Library
+> Section 6 agentic rules  -> data.md ## Settings (agentic thresholds)
+> Section 7 rhythm         -> data.md ## Settings (daily rhythm and delivery)
+> Section 8 comms style    -> data.md ## Settings (communication style)
 >
 > **IMPORTANT:** These are the ONLY valid write targets. Do not write any WorkOS file to any
 > other OneDrive location, SharePoint site, or path. If any tool or connector suggests a path
@@ -50,16 +50,11 @@
 
 > **ONEDRIVE ROOT LOCK:** All file operations during and after onboarding are locked exclusively
 > to `OneDrive > WorkOS`. The only valid write targets are:
-> - `OneDrive > WorkOS > state.md`
-> - `OneDrive > WorkOS > tasks.md`
-> - `OneDrive > WorkOS > tasks-completed.md`
-> - `OneDrive > WorkOS > task-library.md`
-> - `OneDrive > WorkOS > people.md`
-> - `OneDrive > WorkOS > people-stale.md`
+> - `OneDrive > WorkOS > data.md`
 > - `OneDrive > WorkOS > instructions.md`
 > - `OneDrive > WorkOS > skill.md`
 > - `OneDrive > WorkOS > onboard.md`
-> - `OneDrive > WorkOS > Daily > state-[MM-DD-YY].md`
+> - `OneDrive > WorkOS > Daily > data-[MM-DD-YY].md`
 > - `OneDrive > WorkOS > Logs > session-[MM-DD-YY].md`
 > Any path outside `OneDrive > WorkOS` is invalid and must be rejected.
 
@@ -81,15 +76,14 @@ work, and delivers everything to you before you start your day. Over time it lea
 work, builds a library of every task type you handle, and gets faster and more precise with
 each session.
 
-Your data is distributed across six dedicated files that each serve a specific purpose. Tasks,
-people, completed work, and your task library each live in their own file so nothing gets
-buried and everything stays current.
+All your data lives in a single file called data.md -- tasks, people, completed work, your
+task library, settings, and history, all in one place, always current.
 
 This setup takes about 15 minutes. I will start by looking at your recent activity to discover
 your workstreams and collaborators -- you will not need to list anything manually. Then I will
 ask you a short set of questions to configure your preferences.
 
-When we finish, I will generate your six data files, run your first morning boot, and from that
+When we finish, I will generate data.md, run your first morning boot, and from that
 point the 5am trigger handles everything automatically.
 
 Author: John Harden (https://www.linkedin.com/in/john-harden/) from Lemhi.ai (https://lemhi.ai/?ref=workos)
@@ -122,7 +116,7 @@ Present as a markdown table:
 
 ### DISCOVERY STEP 2 -- TOP COLLABORATORS
 Identify the top 8 to 10 people by interaction volume across email, Teams DMs, and calendar.
-For each: name, inferred role, primary interaction channel. These seed people.md.
+For each: name, inferred role, primary interaction channel. These seed data.md ## People.
 
 Present as a markdown table:
 
@@ -143,7 +137,7 @@ Present as inline code tags:
 
 ### DISCOVERY STEP 4 -- CANDIDATE TASK LIBRARY SEEDS
 Identify 3 to 5 obvious recurring task types from activity patterns.
-These become candidates for the task-library.md bootstrap in Section 5.
+These become candidates for the data.md ## Task Library bootstrap in Section 5.
 
 Present as a bullet list:
 - [AUTO-INFERRED RECURRING TASK TYPE]
@@ -179,7 +173,7 @@ Present as a bullet list:
 > Fill gaps with targeted follow-up only for fields that are completely absent.
 > Do not re-ask for anything the user already answered.
 >
-> Data destination: state.md ## Settings (identity fields)
+> Data destination: data.md ## Settings (identity fields)
 
 ---
 
@@ -205,14 +199,14 @@ Present as a bullet list:
 > - definition_of_done: manual declaration
 > - kanban_style: swimlanes by workstream
 >
-> Data destination: state.md ## Settings (workstream preference fields)
+> Data destination: data.md ## Settings (workstream preference fields)
 
 ---
 
 ## SECTION 5: TASK LIBRARY BOOTSTRAP
 
 > [COPILOT INSTRUCTION]
-> This section pre-populates task-library.md. It is the most important configuration section.
+> This section pre-populates data.md ## Task Library. It is the most important configuration section.
 > Free-form conversation. Let the user describe their work naturally.
 >
 > Before opening the conversation, tell the user:
@@ -237,14 +231,14 @@ Present as a bullet list:
 >   If no SOP: "No existing process found for [TASK TYPE]. Walk me through how you do it."
 > STEP 3: Collect custom steps where needed. Keep this conversational -- let the user describe
 >         the steps in plain language. You extract and structure them.
-> STEP 4: Draft the full task-library.md with all entries, SOP fields, custom steps,
+> STEP 4: Draft the full data.md ## Task Library with all entries, SOP fields, custom steps,
 >         and Completion Learnings blocks initialized at zero.
 > STEP 5: Present the drafted library for confirmation:
 >   "Here is your initial Task Library based on what you described. [summary table].
 >    Anything wrong, missing, or worth adjusting before I lock it in?"
-> STEP 6: Do not write to task-library.md until the user confirms.
+> STEP 6: Do not write to data.md until the user confirms.
 >
-> Data destination: task-library.md ## Task Library
+> Data destination: data.md ## Task Library
 
 ---
 
@@ -282,7 +276,7 @@ Present as a bullet list:
 > - agentic_confidence_threshold: MEDIUM
 > - unknown_task_handling_rule: best-guess draft labeled uncertain
 >
-> Data destination: state.md ## Settings (agentic threshold fields)
+> Data destination: data.md ## Settings (agentic threshold fields)
 
 ---
 
@@ -309,7 +303,7 @@ Present as a bullet list:
 > - hard_stop: 6:00pm
 > - nightly_wrap: false
 >
-> Data destination: state.md ## Settings (daily rhythm and delivery fields)
+> Data destination: data.md ## Settings (daily rhythm and delivery fields)
 
 ---
 
@@ -329,7 +323,7 @@ Present as a bullet list:
 >   prose, or mixed
 > - Any specific people whose name appearing in any task or email should trigger an immediate
 >   heads-up before anything else is processed (VIP trigger names -- these are never auto-migrated
->   to people-stale.md regardless of how often contact occurs)
+>   to ## Stale People regardless of how often contact occurs)
 >
 > After the user responds, confirm:
 > "Here is how I will communicate with you: [summary]. Anything to change?"
@@ -340,7 +334,7 @@ Present as a bullet list:
 > - formatting: mixed
 > - vip_trigger_names: none unless specified
 >
-> Data destination: state.md ## Settings (communication style fields)
+> Data destination: data.md ## Settings (communication style fields)
 
 ---
 
@@ -354,7 +348,7 @@ Present as a bullet list:
 - [ ] All three required files are attached to this session: instructions-v6.md, onboard-v6.md, skill.md
 - [ ] Sections 2 through 8 completed -- user has engaged with each topic and confirmed the summary for each
 - [ ] Active workstream list confirmed from Section 2 discovery
-- [ ] Top collaborators list confirmed -- these seed people.md
+- [ ] Top collaborators list confirmed -- these seed data.md ## People
 - [ ] Initial Task Library drafted, WorkIQ SOP Discovery run for every task type, confirmed by user
 - [ ] NEVER attempt list confirmed (Section 6)
 - [ ] SAFE to auto-draft list confirmed (Section 6)
@@ -362,11 +356,11 @@ Present as a bullet list:
 - [ ] Daily rhythm confirmed -- morning brief email and nightly wrap preference set (Section 7)
 - [ ] Nightly wrap preference confirmed (Section 7)
 - [ ] Communication style and VIP trigger names confirmed (Section 8)
-- [ ] User understands: people with no interaction in 30+ days are auto-migrated to people-stale.md. VIPs and direct reports are exempt.
-- [ ] User understands: tasks-completed.md is append-only and grows permanently -- completed tasks are never deleted.
-- [ ] User understands: task-library.md is append-only and grows permanently with completion learnings after each task resolved.
+- [ ] User understands: people with no interaction in 30+ days are auto-migrated to data.md ## Stale People. VIPs and direct reports are exempt.
+- [ ] User understands: data.md ## Completed Tasks is append-only and grows permanently -- completed tasks are never deleted.
+- [ ] User understands: data.md ## Task Library is append-only and grows permanently with completion learnings after each task resolved.
 - [ ] OneDrive > WorkOS folder exists or user confirms they will create it before first boot
-- [ ] User confirms: Copilot generates and maintains all six data files entirely. Files are never edited manually. Preference changes go through Copilot.
+- [ ] User confirms: Copilot generates and maintains data.md entirely. The file is never edited manually. Preference changes go through Copilot.
 - [ ] User acknowledges: the 5am scheduled trigger in Copilot Cowork fires the boot chain automatically each morning once configured. No manual action required after initial setup.
 - [ ] User confirms: all WorkOS files are stored exclusively in `OneDrive > WorkOS`. No files will be written to any other location.
 
@@ -407,16 +401,22 @@ what you want from me? Say yes to proceed, or tell me what needs to change."
 Wait for confirmation. Apply any corrections requested.
 Do not proceed to Step 3 until the user explicitly says yes.
 
-STEP 3 -- GENERATE ALL SIX DATA FILES
-Upon user confirmation:
-- Generate state.md: all Settings fields populated, Active Workstreams from Section 2, empty Open Loops and Muted Task Types sections.
-- Generate tasks.md: all queue sections initialized empty (Todo, In Progress, Blocked, Quick Todos, Agentic Queue).
-- Generate tasks-completed.md: header only, empty body. (`## Completed Tasks` section initialized.)
-- Generate task-library.md: all Task Library entries from Section 5 with SOP fields, custom_steps, and Completion Learnings blocks initialized at zero.
-- Generate people.md: all collaborators from Section 2 discovery with inferred fields. User confirms names and roles.
-- Generate people-stale.md: header only, empty body. (`## Stale People` section initialized.)
-Run WorkIQ SOP Discovery for any task-library.md entries not yet scanned.
-Verify every file is correctly formed before writing.
+STEP 3 -- GENERATE data.md
+Upon user confirmation, build data.md with all sections populated:
+- ## Settings: all fields from Sections 3–8
+- ## Active Workstreams: from Section 2 discovery, confirmed by user
+- ## Archived Workstreams: empty
+- ## Open Loops: empty
+- ## Muted Task Types: empty
+- ## Task Queue with Todo / In Progress / Blocked subsections: empty
+- ## Quick Todos: empty
+- ## Agentic Queue: empty
+- ## Completed Tasks: header only, empty body
+- ## Task Library: all entries from Section 5 with SOP fields, custom_steps, and Completion Learnings blocks initialized at zero
+- ## People: all collaborators from Section 2 discovery with inferred fields (user confirms names and roles)
+- ## Stale People: header only, empty body
+Run WorkIQ SOP Discovery for any ## Task Library entries not yet scanned.
+Verify data.md is correctly formed before writing.
 
 STEP 4 -- WRITE ALL FILES TO ONEDRIVE
 In this exact order:
@@ -426,24 +426,19 @@ Static system files first (read from session-attached copies):
   B. OneDrive > WorkOS > skill.md         (write from the attached skill.md)
   C. OneDrive > WorkOS > onboard.md       (write from this file, with STATUS: COMPLETE | [DATE] prepended)
 
-Data files next (generated from onboarding session):
-  D. OneDrive > WorkOS > state.md
-  E. OneDrive > WorkOS > tasks.md
-  F. OneDrive > WorkOS > tasks-completed.md
-  G. OneDrive > WorkOS > task-library.md
-  H. OneDrive > WorkOS > people.md
-  I. OneDrive > WorkOS > people-stale.md
+Data file:
+  D. OneDrive > WorkOS > data.md          (the single data file generated in Step 3)
 
 Archive and log folders:
-  J. OneDrive > WorkOS > Daily > state-[today MM-DD-YY].md (first daily snapshot)
-  K. Create OneDrive > WorkOS > Logs folder (do not write any log file yet -- first log written at end of first Morning Boot)
+  E. OneDrive > WorkOS > Daily > data-[today MM-DD-YY].md (first daily snapshot)
+  F. Create OneDrive > WorkOS > Logs folder (do not write any log file yet -- first log written at end of first Morning Boot)
 Confirm each write was successful before proceeding to Step 5.
 If any write fails: stop, notify the user, and resolve before continuing.
 
 STEP 5 -- RUN FIRST MORNING BOOT
 Execute instructions.md Section 1 (Morning Boot Sequence) immediately.
 This scans M365, detects tasks, takes an agentic first pass at each task, classifies and routes
-each one, populates tasks.md Task Queue, builds Quick Todos with pre-printed steps, generates
+each one, populates data.md ## Task Queue, builds ## Quick Todos with pre-printed steps, generates
 agentic drafts, and delivers the first Morning Brief to the user's confirmed delivery surface.
 The first session log is written at the end of this boot to OneDrive > WorkOS > Logs > session-[today MM-DD-YY].md.
 
@@ -453,19 +448,15 @@ Deliver the following message verbatim:
 "Your WorkOS is live.
 
 Here is what was just built:
-  - 6 data files initialized and saved to OneDrive > WorkOS
-  - state.md holds your settings and workstreams
-  - tasks.md holds your live task queue
-  - task-library.md is seeded with your task definitions and will grow with every completion
-  - people.md is seeded with your top collaborators
-  - tasks-completed.md and people-stale.md are ready and will fill automatically
+  - data.md initialized and saved to OneDrive > WorkOS -- this single file holds everything:
+    your settings, workstreams, live tasks, completed task log, task library, and people
   - Session logs write to OneDrive > WorkOS > Logs after each session
   - Your first morning boot just ran -- your task board, quick todos, and agentic first passes are ready
   - Every morning at 5am, your Copilot Cowork scheduled trigger fires this loop automatically
 
 From this point forward, work exclusively here. I will track your tasks, learn your patterns,
-take a first pass at everything before presenting it to you, and update your files after every
-session. Every new task type we encounter together gets added to task-library.md so I never
+take a first pass at everything before presenting it to you, and update data.md after every
+session. Every new task type we encounter together gets added to ## Task Library so I never
 have to ask you how to handle it twice. The library gets smarter with every task you complete.
 
 You will never need to open onboard.md again."

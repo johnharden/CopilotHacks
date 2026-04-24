@@ -16,10 +16,10 @@ Do not call this skill at any other time unless the user explicitly requests it.
 
 ### What to Pull
 Read the following before composing:
-- state.md -- Settings (name, timezone), Active Workstreams, Open Loops, Muted Task Types
-- tasks.md -- full Task Queue (Todo, In Progress, Blocked), Quick Todos, Agentic Queue
-- task-library.md -- avg_completion_time_minutes for each task type (used for time estimates)
-- people.md -- VIP names, active delegations, anyone flagged in today's boot
+- data.md ## Settings (name, timezone), ## Active Workstreams, ## Open Loops, ## Muted Task Types
+- data.md ## Task Queue (Todo, In Progress, Blocked), ## Quick Todos, ## Agentic Queue
+- data.md ## Task Library -- avg_completion_time_minutes for each task type (used for time estimates)
+- data.md ## People -- VIP names, active delegations, anyone flagged in today's boot
 
 ### Subject Line Format
 ```
@@ -134,10 +134,10 @@ Can also be triggered manually by the user saying 'send wrap-up' or 'send nightl
 
 ### What to Pull
 Read the following before composing:
-- tasks-completed.md -- all tasks completed today (matching today's date in completed_at)
-- tasks.md -- current Task Queue state (what is still active, blocked, or in progress)
-- state.md -- Active Workstreams, Open Loops added today
-- people.md -- anyone added or updated today
+- data.md ## Completed Tasks -- all tasks completed today (matching today's date in completed_at)
+- data.md ## Task Queue -- current state (what is still active, blocked, or in progress)
+- data.md ## Active Workstreams, ## Open Loops added today
+- data.md ## People -- anyone added or updated today
 - Logs/session-[today].md -- session summary and stats for the day
 
 ### Subject Line Format
@@ -238,7 +238,7 @@ Do not retry automatically.
 - Both emails save to Sent Items (saveToSentItems: true) so the user has a searchable archive.
 - HTML is the content type for both. Plain text fallback is not required.
 - Neither skill modifies any WorkOS data file. Read-only access to all files.
-- If user_email is not set in state.md Settings: do not attempt to send. Log the error. Prompt user to set their email in the next Cowork session.
+- If user_email is not set in data.md ## Settings: do not attempt to send. Log the error. Prompt user to set their email in the next Cowork session.
 
 ---
 
