@@ -1,7 +1,7 @@
 # onboard.md
 # WorkOS -- One-Time Onboarding Protocol
 # Drafted by John Harden, Lemhi.AI (In Conjunction with Claude Code)
-# Version: 6.0 | Run once. Never loaded again after Section 10 completes.
+# Version: 7.0 | Run once. Never loaded again after Section 10 completes.
 
 ---
 
@@ -12,8 +12,8 @@
 > It is loaded only when no WorkOS data file exists and no prior onboarding has been completed.
 >
 > REQUIRED FILES FOR THIS SESSION -- both must be attached before proceeding:
->   1. instructions-v6.md  (operating rules and email skills -- you are reading the result of loading this)
->   2. onboard-v6.md       (this file)
+>   1. instructions-v7.md  (operating rules and email skills -- you are reading the result of loading this)
+>   2. onboard-v7.md       (this file)
 >
 > instructions.md defines all operational rules. This file's only job is to collect the data
 > needed to generate data.md -- the single WorkOS data file.
@@ -338,8 +338,8 @@ Present as a bullet list:
 > Do not proceed to synthesis if any item is unconfirmed.
 > If an item is not ready, tell the user exactly what needs to happen to resolve it first.
 
-- [ ] Both required files are attached to this session: instructions-v6.md, onboard-v6.md
-- [ ] Both files confirmed loaded: instructions-v6.md and onboard-v6.md
+- [ ] Both required files are attached to this session: instructions-v7.md, onboard-v7.md
+- [ ] Both files confirmed loaded: instructions-v7.md and onboard-v7.md
 - [ ] Sections 2 through 8 completed -- user has engaged with each topic and confirmed the summary for each
 - [ ] Active workstream list confirmed from Section 2 discovery
 - [ ] Top collaborators list confirmed -- these seed data.md ## People
@@ -416,7 +416,7 @@ STEP 4 -- WRITE ALL FILES TO ONEDRIVE
 In this exact order:
 
 Static system files first (read from session-attached copies):
-  A. OneDrive > WorkOS > instructions.md  (write from the attached instructions-v6.md)
+  A. OneDrive > WorkOS > instructions.md  (write from the attached instructions-v7.md)
   B. OneDrive > WorkOS > onboard.md       (write from this file, with STATUS: COMPLETE | [DATE] prepended)
 
 Data file:
@@ -461,4 +461,4 @@ Do not load this file again in any future session unless the user explicitly req
 
 ---
 
-*onboard.md | WorkOS one-time onboarding | Version 6.0 | Run once | Do not delete*
+*onboard.md | WorkOS one-time onboarding | Version 7.0 | Run once | Do not delete*

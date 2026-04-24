@@ -1,7 +1,7 @@
 # instructions.md
 # WorkOS -- Operating Instructions
 # Drafted by John Harden, Lemhi.AI (In Conjunction with Claude Code)
-**Version:** 6.0 | **Static. Never edited. Loaded every morning alongside data.md.**
+**Version:** 7.0 | **Static. Never edited. Loaded every morning alongside data.md.**
 
 ---
 
@@ -39,7 +39,7 @@ Session logs live in: `OneDrive > WorkOS > Logs > session-[MM-DD-YY].md` (one fi
 
 Execute in exact order every time WorkOS starts.
 
-**REQUIRED SESSION FILE:** `instructions-v6.md` (this file) must be attached to the Cowork session before the boot chain runs. Email skills are embedded in Section 16 of this file and require no separate attachment.
+**REQUIRED SESSION FILE:** `instructions-v7.md` (this file) must be attached to the Cowork session before the boot chain runs. Email skills are embedded in Section 16 of this file and require no separate attachment.
 
 **Step A:** Check if data.md is attached directly to this Cowork session.
 - YES: Load data.md from the session attachment. Log source: Session Attachment. Proceed to Morning Boot.
@@ -1189,4 +1189,4 @@ On failure: log the error. Announce to user at next Cowork session: 'Nightly wra
 
 ---
 
-*instructions.md | WorkOS operating brain | Version 6.0 | Loaded every session*
+*instructions.md | WorkOS operating brain | Version 7.0 | Loaded every session*

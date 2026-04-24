@@ -20,8 +20,8 @@ Two files load into every Copilot Cowork session:
 
 | File | Purpose |
 |------|---------|
-| `instructions-v6.md` | The operating brain. Defines every rule and email skills. Never edited. |
-| `onboard-v6.md` | One-time setup. Run once, never again. |
+| `instructions-v7.md` | The operating brain. Defines every rule and email skills. Never edited. |
+| `onboard-v7.md` | One-time setup. Run once, never again. |
 
 One data file lives in OneDrive and is managed automatically:
 
@@ -46,7 +46,7 @@ Session logs write to `OneDrive > WorkOS > Logs > session-[date].md` after each 
 ## Setup
 
 1. Clone or download this folder.
-2. In a new Copilot Cowork session, attach two files: `instructions-v6.md` and `onboard-v6.md`.
+2. In a new Copilot Cowork session, attach two files: `instructions-v7.md` and `onboard-v7.md`.
 3. Coworker OS will scan your M365 activity, ask a few free-form questions, and build your data files automatically.
 4. Onboarding takes about 15 minutes. After that, the 5am trigger handles everything.
 
@@ -54,4 +54,4 @@ Session logs write to `OneDrive > WorkOS > Logs > session-[date].md` after each 
 
 ## Version
 
-Current: **v6.0**
+Current: **v7.0**
